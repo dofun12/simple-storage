@@ -39,11 +39,6 @@ public class SQLiteJDBCDriverConnection {
         }
     }
 
-
-    protected String store(String key, Object value){
-        return "";
-    }
-
     protected Object getValue(String key){
         return get(key).orElse(null);
     }
