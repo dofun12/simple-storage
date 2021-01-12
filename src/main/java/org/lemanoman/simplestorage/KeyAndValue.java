@@ -1,5 +1,7 @@
 package org.lemanoman.simplestorage;
 
+import java.util.Objects;
+
 public class KeyAndValue {
     private String key;
     private Object value;
@@ -7,6 +9,19 @@ public class KeyAndValue {
     public KeyAndValue(String key, Object value) {
         this.key = key;
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KeyAndValue that = (KeyAndValue) o;
+        return Objects.equals(key, that.key);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(key);
     }
 
     public String getKey() {

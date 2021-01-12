@@ -1,5 +1,7 @@
 package org.lemanoman.simplestorage;
 
+import java.util.List;
+
 public class SimpleStorage{
     private final boolean AUTO_CLOSE = true;
     private SQLiteJDBCDriverConnection connection = null;
@@ -21,6 +23,12 @@ public class SimpleStorage{
         Object object = connection.getValue(key);
         if(AUTO_CLOSE) connection.close();
         return object;
+    }
+
+    public List<KeyAndValue> getAllChildren(String key){
+        List<KeyAndValue> list = connection.getAllChildren(key);
+        if(AUTO_CLOSE) connection.close();
+        return list;
     }
 
 

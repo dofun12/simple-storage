@@ -3,9 +3,11 @@ package org.lemanoman.simplestorage.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.lemanoman.simplestorage.KeyAndValue;
 import org.lemanoman.simplestorage.SimpleStorage;
 
 import java.io.File;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -116,8 +118,22 @@ public class SimpleStorageTests {
     void testNewDB(){
         File anotherDB = new File("another.db");
         if(anotherDB.exists()) anotherDB.delete();
-        SimpleStorage SimpleStorage = new SimpleStorage("another.db");
-        Assertions.assertDoesNotThrow(() -> SimpleStorage.put("teste","valueA"));
-        Assertions.assertEquals("valueA",SimpleStorage.get("teste"));
+        SimpleStorage ss = new SimpleStorage("another.db");
+        Assertions.assertDoesNotThrow(() -> ss.put("teste","valueA"));
+        Assertions.assertEquals("valueA",ss.get("teste"));
+    }
+
+    @Test
+    void testGetChilds(){
+        File anotherDB = new File("another.db");
+        if(anotherDB.exists()) anotherDB.delete();
+        SimpleStorage simpleStorage = new SimpleStorage("another.db");
+        simpleStorage.put("root.name","Teste");
+        simpleStorage.put("root.url","http://myusr.com.br");
+        simpleStorage.put("root.rizen","A rise hein ...");
+
+        List<KeyAndValue> keyAndValueList = simpleStorage.getAllChildren("root");
+        assertEquals(3, keyAndValueList.size());
+
     }
 }

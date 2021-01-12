@@ -1,15 +1,18 @@
 package org.lemanoman.simplestorage;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SQLiteJDBCDriverConnection {
     private final String NODE_TABLE = "node";
     private final String NODE_COLUMN_KEY = "path";
     private final String NODE_COLUMN_VALUE = "value";
 
-    private final boolean DEBUG = true;
+    private final boolean DEBUG = false;
     private String DB_PATH = "banco.db";
     private Connection connection = null;
 
@@ -56,6 +59,22 @@ public class SQLiteJDBCDriverConnection {
         }
 
         return Optional.empty();
+    }
+
+
+    protected List<KeyAndValue> getAllChildren(String key) {
+        Connection connect = connect();
+        Result result = doSelect(connect, "select distinct * from "+NODE_TABLE+" where "+NODE_COLUMN_KEY+" like ?", key+".%");
+        if (result.isSuccess()) {
+            return result.getList()
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .map(row -> new KeyAndValue((String) row.get(NODE_COLUMN_KEY), row.get(NODE_COLUMN_VALUE)))
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+
+        return null;
     }
 
     private Connection getConnection(){
